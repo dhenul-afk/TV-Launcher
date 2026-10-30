@@ -663,21 +663,22 @@ public class MainActivity extends Activity {
     }
     private void showSettingsMenu(View settings,int selectedRow){
         showCompactMenu(settings, UiText.get(R.string.ui_118),
-                new String[]{UiText.get(R.string.ui_117), UiText.get(R.string.ui_052), UiText.get(R.string.ui_091), UiText.get(R.string.ui_140), UiText.get(R.string.ui_143), UiText.get(R.string.ui_104), UiText.get(R.string.ui_113), UiText.get(R.string.ui_137), UiText.get(R.string.navigation_sound), UiText.get(R.string.layout_mode), UiText.get(R.string.watch_title), UiText.get(R.string.app_manage_title), UiText.get(R.string.weather_title), UiText.get(R.string.ui_119)}, which -> {
+                new String[]{UiText.get(R.string.ui_117), UiText.get(R.string.ui_052), UiText.get(R.string.ui_091), UiText.get(R.string.ui_140), UiText.get(R.string.ui_143), UiText.get(R.string.football_settings), UiText.get(R.string.ui_104), UiText.get(R.string.ui_113), UiText.get(R.string.ui_137), UiText.get(R.string.navigation_sound), UiText.get(R.string.layout_mode), UiText.get(R.string.watch_title), UiText.get(R.string.app_manage_title), UiText.get(R.string.weather_title), UiText.get(R.string.ui_119)}, which -> {
                     settingsReturnRow=which;
                     if (which == 0) openSettingsPage(new Intent(Settings.ACTION_SETTINGS));
                     else if (which == 1) openSettingsPage(SettingsPopup.position(new Intent(this,InputsActivity.class),settings));
                     else if (which == 2) openSettingsPage(SettingsPopup.position(new Intent(this, OverrideSettingsActivity.class), settings));
                     else if (which == 3) openSettingsPage(SettingsPopup.position(new Intent(this, WallpaperSettingsActivity.class), settings));
                     else if (which == 4) showWidgetSettings();
-                    else if (which == 5) openSettingsPage(new Intent(this, QuickSettingsActivity.class));
-                    else if (which == 6) openSettingsPage(SettingsPopup.position(new Intent(this, ScreensaverSettingsActivity.class), settings));
-                    else if (which == 7) showAppOrder();
-                    else if (which == 8) openSettingsPage(SettingsPopup.position(new Intent(this, SoundSettingsActivity.class), settings));
-                    else if (which == 9) showLayoutMode();
-                    else if (which == 10) openSettingsPage(SettingsPopup.position(new Intent(this,WatchTimerSettingsActivity.class),settings));
-                    else if (which == 11) openSettingsPage(SettingsPopup.position(new Intent(this, AppManageSettingsActivity.class), settings));
-                    else if (which == 12) openSettingsPage(SettingsPopup.position(new Intent(this, WeatherSettingsActivity.class), settings));
+                    else if (which == 5) { if (footballWidget != null) footballWidget.settings(); }
+                    else if (which == 6) openSettingsPage(new Intent(this, QuickSettingsActivity.class));
+                    else if (which == 7) openSettingsPage(SettingsPopup.position(new Intent(this, ScreensaverSettingsActivity.class), settings));
+                    else if (which == 8) showAppOrder();
+                    else if (which == 9) openSettingsPage(SettingsPopup.position(new Intent(this, SoundSettingsActivity.class), settings));
+                    else if (which == 10) showLayoutMode();
+                    else if (which == 11) openSettingsPage(SettingsPopup.position(new Intent(this,WatchTimerSettingsActivity.class),settings));
+                    else if (which == 12) openSettingsPage(SettingsPopup.position(new Intent(this, AppManageSettingsActivity.class), settings));
+                    else if (which == 13) openSettingsPage(SettingsPopup.position(new Intent(this, WeatherSettingsActivity.class), settings));
                     else showShutdown();
                 }, "settings",selectedRow);
     }
@@ -716,7 +717,7 @@ public class MainActivity extends Activity {
             final int index = i;
             String rowIcon = icon;
             if ("settings".equals(icon)) {
-                String[] settingsIcons = {"settings", "input", "home", "wallpaper", "widgets", "quick", "sleep", "order", "sound", "apps", "watch_timer", "apps", "wallpaper", "power"};
+                String[] settingsIcons = {"settings", "input", "home", "wallpaper", "widgets", "settings", "quick", "sleep", "order", "sound", "apps", "watch_timer", "apps", "wallpaper", "power"};
                 if (i < settingsIcons.length) rowIcon = settingsIcons[i];
             }
             if ("apps".equals(icon)) {
@@ -1733,4 +1734,3 @@ public class MainActivity extends Activity {
         @Override protected int computeScrollDeltaToGetChildRectOnScreen(android.graphics.Rect r) { return 0; }
     }
 }
-
