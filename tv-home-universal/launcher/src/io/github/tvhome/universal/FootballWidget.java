@@ -160,6 +160,8 @@ final class FootballWidget extends LinearLayout {
         update();
     }
 
+    View tabView(int index) { return tabs[index]; }
+
     // ---------------------------------------------------------------- settings
 
     private List<String> competitions() {

@@ -1015,14 +1015,26 @@ public class MainActivity extends Activity {
     /** Explicit D-pad targets: one row per press, ends of rows and of the top bar don't wrap. */
     private void wireFocus() {
         int d = dockCards.size(), g = gridCards.size();
+        boolean footballVisible = footballWidget != null
+                && footballWidget.getVisibility() == View.VISIBLE;
         for (int i = 0; i < pills.size(); i++) {
             View p = pills.get(i);
             p.setNextFocusLeftId(i == 0 ? p.getId() : pills.get(i - 1).getId());
             p.setNextFocusRightId(i == pills.size() - 1 ? p.getId() : pills.get(i + 1).getId());
             p.setNextFocusUpId(p.getId());
-            p.setNextFocusDownId(d > 0 ? headerAppTarget() : p.getId());
+            p.setNextFocusDownId(footballVisible && i == 0 ? footballWidget.tabView(0).getId()
+                    : d > 0 ? headerAppTarget() : p.getId());
         }
         int topId = pills.get(0).getId();
+        if (footballVisible) {
+            for (int i = 0; i < 3; i++) {
+                View tab = footballWidget.tabView(i);
+                tab.setNextFocusLeftId(i == 0 ? tab.getId() : footballWidget.tabView(i - 1).getId());
+                tab.setNextFocusRightId(i == 2 ? tab.getId() : footballWidget.tabView(i + 1).getId());
+                tab.setNextFocusUpId(topId);
+                tab.setNextFocusDownId(d > 0 ? headerAppTarget() : tab.getId());
+            }
+        }
         for (int i = 0; i < d; i++) {
             View c = dockCards.get(i);
             c.setNextFocusUpId(topId);
@@ -1107,6 +1119,7 @@ public class MainActivity extends Activity {
             footballWidget.setVisibility(football ? View.VISIBLE : View.GONE);
             if (football) footballWidget.resume(); else footballWidget.pause();
         }
+        if (!dockCards.isEmpty()) wireFocus();
         clock.post(this::alignClockLabels);
     }    /** Applies the cached weather to the wallpaper and schedules a refresh when data is stale. */
     private void applyWeather() {
