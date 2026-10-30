@@ -1,0 +1,32 @@
+name: Football API smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/test-football-api.yml
+      - tv-home-universal/tools/test-football-api.py
+      - tv-home-universal/launcher/src/**/Football*.java
+
+permissions:
+  contents: read
+
+concurrency:
+  group: football-api-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  live-api:
+    name: Check football-data.org v4
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Test schedule, results, and standings
+        env:
+          FOOTBALL_DATA_API_TOKEN: ${{ secrets.FOOTBALL_DATA_API_TOKEN }}
+        run: python3 tv-home-universal/tools/test-football-api.py
